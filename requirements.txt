@@ -1,0 +1,10 @@
+numpy==1.21.6
+xgboost==1.6.1
+scikit-learn==1.1.1
+pandas==1.4.2
+tqdm==4.64.0
+gpytorch==1.6.0
+keras-tcn==3.4.4
+openpyxl==3.0.10
+matplotlib==3.5.2
+seaborn==0.11.2

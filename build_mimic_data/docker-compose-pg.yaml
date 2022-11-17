@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+
+ postgres:
+  image: postgres/mimic
+  ports:
+   - 5432:5432
+  volumes:
+   - ./mimic/csv:/mimic_data
+   - ./mimic/pgdata:/var/lib/postgresql/data
+  environment:
+   BUILD_MIMIC: 1
+   POSTGRES_PASSWORD: postgres
+   MIMIC_PASSWORD: mimic

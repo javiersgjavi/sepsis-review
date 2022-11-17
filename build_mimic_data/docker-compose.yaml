@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+
+ mgp-tcn:
+  image: sepsis:v2
+  volumes:
+   - ./mgp-tcn:/mgp-tcn/
+  environment:
+   HOST_POSTGRES: postgres
+   POSTGRES_PASSWORD: postgres
+   POSTGRES_PORT: 5432
+  stdin_open: true 
+  tty: true        
+  deploy:
+   resources:
+    reservations:
+     devices:
+      - capabilities: [gpu]
+
+
+ postgres:
+  image: postgres/mimic
+  ports:
+   - 5432:5432
+  volumes:
+   - ./mimic-code/mimic-iii/buildmimic/docker/mimic/csv:/mimic_data
+   - ./mimic-code/mimic-iii/buildmimic/docker/mimic/pgdata:/var/lib/postgresql/data
+  environment:
+   BUILD_MIMIC: 0
+   POSTGRES_PASSWORD: postgres
+   MIMIC_PASSWORD: mimic

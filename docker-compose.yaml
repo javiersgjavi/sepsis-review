@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+
+ sepsis_repository:
+  build: .
+  volumes:
+   - ./:/sepsis_repository/
+  stdin_open: true
+  tty: true
+  deploy:
+   resources:
+    reservations:
+     devices:
+      - capabilities: [gpu]
