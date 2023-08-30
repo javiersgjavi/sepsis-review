@@ -8,14 +8,16 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-from classes.Data import Data, ParamsGrid
+from classes.Data import Data, ParamsGrid, DataChallenge
 from classes.Metrics import MetricCalculator
 from classes.DL import GRU, TCN, CNN, LSTM, MLP
 from classes.ML import LinearSVC, XGBClassifier, LogisticRegression, AdaBoostClassifier, RandomForestClassifier
 from utils.preprocess_data import preprocess_general, preprocess_gp
 
 class ParameterOptimization:
-    def __init__(self, name, models, imputation_methods, iterations_sampler):
+    def __init__(self, data, name, models, imputation_methods, iterations_sampler):
+
+        self.data_source = data
 
         os.environ["CUDA_VISIBLE_DEVICES"]="0"
         physical_devices = tf.config.list_physical_devices('GPU')
@@ -50,24 +52,29 @@ class ParameterOptimization:
         self.dl_models = [cls_name for cls_name, cls_obj in inspect.getmembers(sys.modules['classes.DL']) if inspect.isclass(cls_obj)]
 
     def _load_data(self, imputation_method, norm_method):
-        print(f'Loading data with imputation method: {imputation_method}')
+        if self.data_source == 'MIMIC-III':
+            print(f'Loading data with imputation method: {imputation_method}')
 
-        with open(f'{self.data_original_path}train_data.pkl', 'rb') as f:
-            train_data = pickle.load(f)
+            with open(f'{self.data_original_path}train_data.pkl', 'rb') as f:
+                train_data = pickle.load(f)
 
-        with open(f'{self.data_original_path}val_data.pkl', 'rb') as f:
-            val_data = pickle.load(f)
+            with open(f'{self.data_original_path}val_data.pkl', 'rb') as f:
+                val_data = pickle.load(f)
 
-        with open(f'{self.data_original_path}test_data.pkl', 'rb') as f:
-            test_data = pickle.load(f)
+            with open(f'{self.data_original_path}test_data.pkl', 'rb') as f:
+                test_data = pickle.load(f)
 
-        # Preprocess data with chosen imputation method
-        if imputation_method == 'gaussian_process':
-            train_data, val_data, test_data = preprocess_gp(train_data, val_data, test_data) 
+            # Preprocess data with chosen imputation method
+            if imputation_method == 'gaussian_process':
+                train_data, val_data, test_data = preprocess_gp(train_data, val_data, test_data)
 
-        else:
-            train_data, val_data, test_data = preprocess_general(train_data, val_data, test_data, imputation_method)
-        
+            else:
+                train_data, val_data, test_data = preprocess_general(train_data, val_data, test_data, imputation_method)
+
+        elif self.data_source == 'MIMIC-III-Challenge':
+            train_data, val_data, test_data = DataChallenge(imputation_method=imputation_method).get_data()
+
+
         data_provider = Data(train_data, val_data, test_data, norm_method)
         return data_provider
 

@@ -4,28 +4,29 @@ from classes.ParameterOptimization import ParameterOptimization
 from classes.Experiment import Experiment
 from utils.generate_reports import generate_tables, generate_graphs, generate_graph_experiment
 
-def run_parameter_optimization(name, models, imputation_methods, iterations_sampler):
 
+def run_parameter_optimization(data, name, models, imputation_methods, iterations_sampler):
     print('[INFO] RUNNING PARAMETER OPTIMIZATION]')
-    optimization = ParameterOptimization(name, models, imputation_methods, iterations_sampler)
+    optimization = ParameterOptimization(data, name, models, imputation_methods, iterations_sampler)
     optimization.run()
     print('[INFO] PARAMETER OPTIMIZATION FINISHED')
 
-    data_path = f'./results/{name}'
+    data_path = f'./results/{data}/{name}'
 
     print('[INFO] GENERATING REPORT')
     generate_tables(data_path)
     generate_graphs(data_path)
     print('[INFO] REPORT GENERATED')
 
-def main(name, models, imputation_methods, iterations_sampler, hours_before_onset):
-    data_path = f'./results/{name}'
+
+def main(data, name, models, imputation_methods, iterations_sampler, hours_before_onset):
+    data_path = f'./results/{data}/{name}'
 
     if not os.path.exists(data_path):
-        run_parameter_optimization(name, models, imputation_methods, iterations_sampler)
+        run_parameter_optimization(data, name, models, imputation_methods, iterations_sampler)
 
     print('[INFO] STARTING EXPERIMENT')
-    experiment = Experiment(name, hours_before_onset)
+    experiment = Experiment(data, name, hours_before_onset)
     experiment.run()
     print('[INFO] EXPERIMENT FINISHED')
 
@@ -36,13 +37,13 @@ def main(name, models, imputation_methods, iterations_sampler, hours_before_onse
     print('[INFO] EXECUTION FINISHED')
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     name = 'name_experiment'
 
     hours_before_onset = 7
 
     iterations_sampler = 25
-    
+
     # Mark the chosen ones with 1, others with 0
 
     imputation_methods = {
@@ -52,7 +53,7 @@ if __name__=='__main__':
         'gaussian_process': 0,
         'linear_interpolation': 1,
         'indicator_imputation': 1,
-        }
+    }
 
     models = {
         'TCN': 1,
@@ -66,6 +67,8 @@ if __name__=='__main__':
         'AdaBoostClassifier': 1,
         'RandomForestClassifier': 1
     }
-    
 
-    main(name, models, imputation_methods, iterations_sampler, hours_before_onset)
+    # data = 'MIMIC-III'
+    data = 'MIMIC-III-Challenge'
+
+    main(data, name, models, imputation_methods, iterations_sampler, hours_before_onset)
