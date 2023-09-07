@@ -12,7 +12,7 @@ from classes.Data import Data, ParamsGrid, DataChallenge
 from classes.Metrics import MetricCalculator
 from classes.DL import GRU, TCN, CNN, LSTM, MLP
 from classes.ML import LinearSVC, XGBClassifier, LogisticRegression, AdaBoostClassifier, RandomForestClassifier
-from utils.preprocess_data import preprocess_general, preprocess_gp
+from utils.preprocess_data import preprocess_general
 
 class ParameterOptimization:
     def __init__(self, data, name, models, imputation_methods, iterations_sampler):
@@ -65,11 +65,7 @@ class ParameterOptimization:
                 test_data = pickle.load(f)
 
             # Preprocess data with chosen imputation method
-            if imputation_method == 'gaussian_process':
-                train_data, val_data, test_data = preprocess_gp(train_data, val_data, test_data)
-
-            else:
-                train_data, val_data, test_data = preprocess_general(train_data, val_data, test_data, imputation_method)
+            train_data, val_data, test_data = preprocess_general(train_data, val_data, test_data, imputation_method)
 
         elif self.data_source == 'MIMIC-III-Challenge':
             train_data, val_data, test_data = DataChallenge(imputation_method=imputation_method).get_data()
@@ -108,7 +104,7 @@ class ParameterOptimization:
     def run(self):
         columns = ['model', 'imputation_method', 'norm_method', 'params', 'model_id', 'time', *self.metric_calculator.get_name_metrics()]
         results = pd.DataFrame(columns=columns)
-        save_path = f'./results/{self.name}/optimization'
+        save_path = f'./results/{self.data_source}/{self.name}/optimization'
 
         os.makedirs(save_path, exist_ok=True)
 

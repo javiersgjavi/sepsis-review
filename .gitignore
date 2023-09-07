@@ -1,4 +1,5 @@
 # Byte-compiled / optimized / DLL files
+nohup.out
 .idea/*
 __pycache__/
 *.py[cod]

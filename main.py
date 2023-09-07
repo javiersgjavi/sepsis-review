@@ -50,7 +50,6 @@ if __name__ == '__main__':
         'carry_forward': 1,
         'forward_filling': 1,
         'zero_imputation': 1,
-        'gaussian_process': 0,
         'linear_interpolation': 1,
         'indicator_imputation': 1,
     }

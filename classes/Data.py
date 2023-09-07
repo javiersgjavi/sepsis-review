@@ -314,6 +314,8 @@ class DataChallenge:
         with open(f'{path}/test.pkl', 'rb') as f:
             test = pickle.load(f)
 
+        return train, val, test
+
     def get_data(self):
         folder_data = f'./data/challenge/{self.imputation_method}'
         os.makedirs(folder_data, exist_ok=True)

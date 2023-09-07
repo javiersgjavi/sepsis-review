@@ -26,13 +26,13 @@ class Experiment:
             'XGBClassifier': XGBClassifier,
             'LogisticRegression': LogisticRegression,
             'AdaBoostClassifier' : AdaBoostClassifier,
-            'RandomForestClassifier': RandomForestClassifier     
+            'RandomForestClassifier': RandomForestClassifier
         }
 
         self.metric_calculator = MetricCalculator()
 
-        self.base_path = f'./results/{name}/experiment/'
-        self.results_optimization = pd.read_csv(f'./results/{name}/optimization/results.csv', index_col='Unnamed: 0')
+        self.base_path = f'./results/{data}/{name}/experiment/'
+        self.results_optimization = pd.read_csv(f'./results/{data}/{name}/optimization/results.csv', index_col='Unnamed: 0')
         self.hours_before_onset = hours_before_onset
         self.dl_models = [cls_name for cls_name, cls_obj in inspect.getmembers(sys.modules['classes.DL']) if inspect.isclass(cls_obj)]
         self.data_generated = {}
@@ -66,10 +66,12 @@ class Experiment:
                 mask[start_index:end_index] = False
             dataset[1] = dataset[1][:, mask]
         
+        print(train_data[0].shape)
         return train_data, val_data, test_data
 
     def load_data(self, imputation_method, norm_method, i):
         name_data = f'{self.data_source}_{imputation_method}_{norm_method}_{i}'
+
         if name_data in self.data_generated.keys():
             data_provider = self.data_generated[name_data]
 
