@@ -1,4 +1,7 @@
 # Byte-compiled / optimized / DLL files
+nohup.out
+docker/requirements.txt
+.idea/*
 __pycache__/
 *.py[cod]
 *$py.class

@@ -8,23 +8,26 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-from classes.Data import Data, ParamsGrid
-from classes.Metrics import MetricCalculator
-from classes.DL import GRU, TCN, CNN, LSTM, MLP
-from classes.ML import LinearSVC, XGBClassifier, LogisticRegression, AdaBoostClassifier, RandomForestClassifier
-from utils.preprocess_data import preprocess_general, preprocess_gp
+from src.classes.Data import Data, ParamsGrid, DataChallenge
+from src.classes.Metrics import MetricCalculator
+from src.classes.DL import GRU, TCN, CNN, LSTM, MLP
+from src.classes.ML import LinearSVC, XGBClassifier, LogisticRegression, AdaBoostClassifier, RandomForestClassifier
+from src.utils.preprocess_data import preprocess_general
+
 
 class ParameterOptimization:
-    def __init__(self, name, models, imputation_methods, iterations_sampler):
+    def __init__(self, data, name, models, imputation_methods, iterations_sampler):
 
-        os.environ["CUDA_VISIBLE_DEVICES"]="0"
+        self.data_source = data
+
+        os.environ["CUDA_VISIBLE_DEVICES"] = "0"
         physical_devices = tf.config.list_physical_devices('GPU')
         tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
         self.name = name
         self.models_to_create = models
         self.iter_sampler = iterations_sampler
-        self.data_original_path='./data/original/'
+        self.data_original_path = './data/original/'
 
         self.models = {
             'GRU': GRU,
@@ -35,9 +38,9 @@ class ParameterOptimization:
             'LinearSVC': LinearSVC,
             'XGBClassifier': XGBClassifier,
             'LogisticRegression': LogisticRegression,
-            'AdaBoostClassifier' : AdaBoostClassifier,
+            'AdaBoostClassifier': AdaBoostClassifier,
             'RandomForestClassifier': RandomForestClassifier
-            
+
         }
 
         self.metric_calculator = MetricCalculator()
@@ -47,27 +50,28 @@ class ParameterOptimization:
             if imputation_methods[method] == 1:
                 self.imputation_methods.append(method)
 
-        self.dl_models = [cls_name for cls_name, cls_obj in inspect.getmembers(sys.modules['classes.DL']) if inspect.isclass(cls_obj)]
+        self.dl_models = [cls_name for cls_name, cls_obj in inspect.getmembers(sys.modules['src.classes.DL']) if
+                          inspect.isclass(cls_obj)]
 
     def _load_data(self, imputation_method, norm_method):
-        print(f'Loading data with imputation method: {imputation_method}')
+        if self.data_source == 'MIMIC-III':
+            print(f'Loading data with imputation method: {imputation_method}')
 
-        with open(f'{self.data_original_path}train_data.pkl', 'rb') as f:
-            train_data = pickle.load(f)
+            with open(f'{self.data_original_path}train_data.pkl', 'rb') as f:
+                train_data = pickle.load(f)
 
-        with open(f'{self.data_original_path}val_data.pkl', 'rb') as f:
-            val_data = pickle.load(f)
+            with open(f'{self.data_original_path}val_data.pkl', 'rb') as f:
+                val_data = pickle.load(f)
 
-        with open(f'{self.data_original_path}test_data.pkl', 'rb') as f:
-            test_data = pickle.load(f)
+            with open(f'{self.data_original_path}test_data.pkl', 'rb') as f:
+                test_data = pickle.load(f)
 
-        # Preprocess data with chosen imputation method
-        if imputation_method == 'gaussian_process':
-            train_data, val_data, test_data = preprocess_gp(train_data, val_data, test_data) 
-
-        else:
+            # Preprocess data with chosen imputation method
             train_data, val_data, test_data = preprocess_general(train_data, val_data, test_data, imputation_method)
-        
+
+        elif self.data_source == 'MIMIC-III-Challenge':
+            train_data, val_data, test_data = DataChallenge(imputation_method=imputation_method).get_data()
+
         data_provider = Data(train_data, val_data, test_data, norm_method)
         return data_provider
 
@@ -99,9 +103,10 @@ class ParameterOptimization:
         return prediction, train_time
 
     def run(self):
-        columns = ['model', 'imputation_method', 'norm_method', 'params', 'model_id', 'time', *self.metric_calculator.get_name_metrics()]
+        columns = ['model', 'imputation_method', 'norm_method', 'params', 'model_id', 'time',
+                   *self.metric_calculator.get_name_metrics()]
         results = pd.DataFrame(columns=columns)
-        save_path = f'./results/{self.name}/optimization'
+        save_path = f'./results/{self.data_source}/{self.name}/optimization'
 
         os.makedirs(save_path, exist_ok=True)
 
@@ -120,9 +125,8 @@ class ParameterOptimization:
                     model_type = 'dl' if model_name in self.dl_models else 'ml'
 
                     for params in ParamsGrid(model_name, model_type, self.iter_sampler):
-
                         prediction, training_time = self._train_predict(model_type, data_provider, model_name, params)
-                            
+
                         real = data_provider.get_y_test_real()
                         np.save(f'{results_path}{model_id}.npy', prediction)
 
@@ -133,4 +137,3 @@ class ParameterOptimization:
 
                         results.to_csv(f'{save_path}/results.csv')
                         model_id += 1
-        

@@ -5,14 +5,17 @@ import pandas as pd
 import os
 import numpy as np
 
-from classes.Metrics import MetricCalculator
-from classes.Data import Data
-from classes.DL import GRU, TCN, CNN, LSTM, MLP
-from classes.ML import LinearSVC, XGBClassifier, LogisticRegression, AdaBoostClassifier, RandomForestClassifier
-from utils.preprocess_data import process_params_string
+from src.classes.Metrics import MetricCalculator
+from src.classes.Data import Data, DataChallenge
+from src.classes.DL import GRU, TCN, CNN, LSTM, MLP
+from src.classes.ML import LinearSVC, XGBClassifier, LogisticRegression, AdaBoostClassifier, RandomForestClassifier
+from src.utils.preprocess_data import process_params_string
 
 class Experiment:
-    def __init__(self, name, hours_before_onset):
+    def __init__(self, data, name, hours_before_onset):
+
+        self.data_source = data
+
         self.models = {
             'GRU': GRU,
             'TCN': TCN,
@@ -23,15 +26,15 @@ class Experiment:
             'XGBClassifier': XGBClassifier,
             'LogisticRegression': LogisticRegression,
             'AdaBoostClassifier' : AdaBoostClassifier,
-            'RandomForestClassifier': RandomForestClassifier     
+            'RandomForestClassifier': RandomForestClassifier
         }
 
         self.metric_calculator = MetricCalculator()
 
-        self.base_path = f'./results/{name}/experiment/'
-        self.results_optimization = pd.read_csv(f'./results/{name}/optimization/results.csv', index_col='Unnamed: 0')
+        self.base_path = f'./results/{data}/{name}/experiment/'
+        self.results_optimization = pd.read_csv(f'./results/{data}/{name}/optimization/results.csv', index_col='Unnamed: 0')
         self.hours_before_onset = hours_before_onset
-        self.dl_models = [cls_name for cls_name, cls_obj in inspect.getmembers(sys.modules['classes.DL']) if inspect.isclass(cls_obj)]
+        self.dl_models = [cls_name for cls_name, cls_obj in inspect.getmembers(sys.modules['src.classes.DL']) if inspect.isclass(cls_obj)]
         self.data_generated = {}
 
     def get_params_model(self, model):
@@ -63,23 +66,29 @@ class Experiment:
                 mask[start_index:end_index] = False
             dataset[1] = dataset[1][:, mask]
         
+        print(train_data[0].shape)
         return train_data, val_data, test_data
 
     def load_data(self, imputation_method, norm_method, i):
-        name_data = f'{imputation_method}_{norm_method}_{i}'
+        name_data = f'{self.data_source}_{imputation_method}_{norm_method}_{i}'
+
         if name_data in self.data_generated.keys():
             data_provider = self.data_generated[name_data]
 
         else:
-            path_data = f'./data/{imputation_method}/'
-            with open(f'{path_data}train_data', 'rb') as f:
-                train_data = pickle.load(f)
+            if self.data_source == 'MIMIC-III':
+                path_data = f'./data/{imputation_method}/'
+                with open(f'{path_data}train_data', 'rb') as f:
+                    train_data = pickle.load(f)
 
-            with open(f'{path_data}val_data', 'rb') as f:
-                val_data = pickle.load(f)
+                with open(f'{path_data}val_data', 'rb') as f:
+                    val_data = pickle.load(f)
 
-            with open(f'{path_data}test_data', 'rb') as f:
-                test_data = pickle.load(f)
+                with open(f'{path_data}test_data', 'rb') as f:
+                    test_data = pickle.load(f)
+
+            elif self.data_source == 'MIMIC-III-Challenge':
+                train_data, val_data, test_data = DataChallenge(imputation_method=imputation_method).get_data()
 
             train_data, val_data, test_data = self.remove_hours(train_data, val_data, test_data, i)
             data_provider = Data(train_data, val_data, test_data, norm_method)

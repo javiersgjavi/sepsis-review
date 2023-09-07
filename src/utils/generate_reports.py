@@ -59,7 +59,6 @@ def generate_graphs(results_path):
     'linear_interpolation': 'LI',
     'carry_forward': 'CF',
     'zero_imputation': 'ZI',
-    #'gaussian_process': 'GP',
     'indicator_imputation': 'II',
     'forward_filling': 'FF',
 }
