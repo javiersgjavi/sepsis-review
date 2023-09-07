@@ -63,6 +63,19 @@ This repository has been tested with the following requirements; however, it may
 
 The repository can be cloned with the command: ```git clone https://github.com/javiersgjavi/sepsis-review.git```
 
+
+### _How to download the Physionet challenge data?_:
+
+This dataset is only used in the Appendix of the article. It is available from [Physionet Challenge website](https://physionet.org/content/challenge-2019/1.0.0/). However, in this repository we have downloaded the data available in Kaggle [Kaggle](https://www.kaggle.com/datasets/salikhussaini49/prediction-of-sepsis) which already mix the data from the two different hospitals.
+
+1. Make sure you have installed the Kaggle API: ```pip install kaggle```.
+2. Give execution files to the file _download_data.sh_ with the command: ```chmod +x download_data.sh```.
+3. Execute the file _download_data.sh_ with the command: ```./download_data.sh```.
+
+### _How to download MIMIC-III data_:
+
+_This is the dataset which is mainly used in the article_
+
 ### Generate the data
 
 ```INFO:```: ***If you are only interested in obtaining the data, I recommend you to visit this other [repository](https://github.com/javiersgjavi/tabular-mimic-iii)***
