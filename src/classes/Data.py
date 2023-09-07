@@ -1,4 +1,3 @@
-from inspect import Parameter
 import os
 import pickle
 import pandas as pd
@@ -8,7 +7,7 @@ import numpy as np
 from tqdm import tqdm
 
 from sklearn.model_selection import ParameterSampler
-from utils.preprocess_data import linear_interpolation, carry_forward_data, forward_filling, indicator_imputation
+from src.utils.preprocess_data import linear_interpolation, carry_forward_data, forward_filling, indicator_imputation
 
 
 class ParamsGrid:

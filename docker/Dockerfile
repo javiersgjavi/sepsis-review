@@ -1,6 +1,6 @@
 FROM tensorflow/tensorflow:2.7.1-gpu
 WORKDIR /sepsis_repository
-COPY ./requirements.txt ./requirements.txt
+COPY ../requirements.txt ./requirements.txt
 
 RUN rm /etc/apt/sources.list.d/cuda.list
 RUN rm /etc/apt/sources.list.d/nvidia-ml.list

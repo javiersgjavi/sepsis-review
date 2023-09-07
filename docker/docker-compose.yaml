@@ -5,7 +5,7 @@ services:
  sepsis_repository:
   build: .
   volumes:
-   - ./:/sepsis_repository/
+   - ../:/sepsis_repository/
   stdin_open: true
   tty: true
   deploy:

@@ -1,8 +1,8 @@
 import os
 
-from classes.ParameterOptimization import ParameterOptimization
-from classes.Experiment import Experiment
-from utils.generate_reports import generate_tables, generate_graphs, generate_graph_experiment
+from src.classes.ParameterOptimization import ParameterOptimization
+from src.classes.Experiment import Experiment
+from src.utils.generate_reports import generate_tables, generate_graphs, generate_graph_experiment
 
 
 def run_parameter_optimization(data, name, models, imputation_methods, iterations_sampler):
@@ -11,7 +11,7 @@ def run_parameter_optimization(data, name, models, imputation_methods, iteration
     optimization.run()
     print('[INFO] PARAMETER OPTIMIZATION FINISHED')
 
-    data_path = f'./results/{data}/{name}'
+    data_path = f'../results/{data}/{name}'
 
     print('[INFO] GENERATING REPORT')
     generate_tables(data_path)

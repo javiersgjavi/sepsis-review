@@ -121,6 +121,8 @@ The characteristics of the parameter optimization and the experiments are define
 
 - **imputation_methods**: this one is also similar to the last two. It is a dict with all available imputation methods, put 1 to activate an imputation method, or 0 to deactivate it.
 
+- **data**: define the name of the data that is going to be use.
+
 On the other hand, the main variable of the experiment is:
 
 - **hours_before_onset**: During the experiment, models will be tested with different horizons, ranging from 1 hour before sepsis onset to the number of hours before onset defined in this variable.
@@ -142,15 +144,15 @@ On the other hand, the main variable of the experiment is:
 ## How works the code of the repository?
 
 - **main.py**: it is the script that defines and launches a parameter optimization and an experiment.
-- **utils/generate_reports.py**: it is a script that generates all tables and images with the summary of the parameter optimization and experiment results.
-- **utils/preprocess_data.py**: it is a script that contains all functions that preprocess the data. This script contains all functions to make the different imputations methods and probably is the more messy and difficult file to understand in this repository. I'm sorry for the untidy state of this file, but the management of the input data was very chaotic due to its format.
-- **classes/ParameterOptimization.py**: is one of the main class of this repository. Prepare de data, execute the models and save the results.
-- **classes/Experiment.py**: is the other main class in this repository. It loads each model with the best parameters and the best imputation method for the data found during the optimization, and tests each model with different horizons, which will start from one hour before start to as many hours before start as defined in main.py.
-- **classes/Data.py**: this file contains classes related to the management of the data, the normalization, and the hyperparameter values for the models. 
-- **classes/DL.py**: this file contains the Deep Learning models implemented in this project, whose models extend the class DL. The addition of a new model is very modular and only must extend the DL class, similar to the other ones.
-- **classes/ML.py**: this file contains the Machine Learning models implemented in this project, whose models extend the class ML. The addition of a new model is also modular and only must extend the ML class, similar to the other ones.
-- **classes/Metrics.py**: this file contains the metrics implemented in this project. To add a new metric, it must be added as a method in the MetricCalculator class.
-- **classes/MGP.py**: the code of this file implement de MGP used in the gaussian process imputation. All code in this file is extracted from [BorgwardtLab/Imputing_Signatures](https://github.com/BorgwardtLab/Imputing_Signatures) repository.
+- **src/utils/generate_reports.py**: it is a script that generates all tables and images with the summary of the parameter optimization and experiment results.
+- **src/utils/preprocess_data.py**: it is a script that contains all functions that preprocess the data. This script contains all functions to make the different imputations methods and probably is the more messy and difficult file to understand in this repository. I'm sorry for the untidy state of this file, but the management of the input data was very chaotic due to its format.
+- **src/classes/ParameterOptimization.py**: is one of the main class of this repository. Prepare de data, execute the models and save the results.
+- **src/classes/Experiment.py**: is the other main class in this repository. It loads each model with the best parameters and the best imputation method for the data found during the optimization, and tests each model with different horizons, which will start from one hour before start to as many hours before start as defined in main.py.
+- **src/classes/Data.py**: this file contains classes related to the management of the data, the normalization, and the hyperparameter values for the models. 
+- **src/classes/DL.py**: this file contains the Deep Learning models implemented in this project, whose models extend the class DL. The addition of a new model is very modular and only must extend the DL class, similar to the other ones.
+- **src/classes/ML.py**: this file contains the Machine Learning models implemented in this project, whose models extend the class ML. The addition of a new model is also modular and only must extend the ML class, similar to the other ones.
+- **src/classes/Metrics.py**: this file contains the metrics implemented in this project. To add a new metric, it must be added as a method in the MetricCalculator class.
+- **docker/**: this folder contains the files to create the docker image and the docker container.
 - **parameters.json**: this file contains the possible values for the parameters of each model.
 - **data**: this folder will be generated during the execution of the repository and will contain the original data and the imputed data to reduce the execution time.
 - **results**: this folder will be generated during the execution of the repository too. It will contain the tables, images, and predictions of the results.csv which is the file that contains all the data of the parameter optimization and the experiment.

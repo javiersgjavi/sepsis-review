@@ -5,11 +5,11 @@ import pandas as pd
 import os
 import numpy as np
 
-from classes.Metrics import MetricCalculator
-from classes.Data import Data, DataChallenge
-from classes.DL import GRU, TCN, CNN, LSTM, MLP
-from classes.ML import LinearSVC, XGBClassifier, LogisticRegression, AdaBoostClassifier, RandomForestClassifier
-from utils.preprocess_data import process_params_string
+from src.classes.Metrics import MetricCalculator
+from src.classes.Data import Data, DataChallenge
+from src.classes.DL import GRU, TCN, CNN, LSTM, MLP
+from src.classes.ML import LinearSVC, XGBClassifier, LogisticRegression, AdaBoostClassifier, RandomForestClassifier
+from src.utils.preprocess_data import process_params_string
 
 class Experiment:
     def __init__(self, data, name, hours_before_onset):
@@ -34,7 +34,7 @@ class Experiment:
         self.base_path = f'./results/{data}/{name}/experiment/'
         self.results_optimization = pd.read_csv(f'./results/{data}/{name}/optimization/results.csv', index_col='Unnamed: 0')
         self.hours_before_onset = hours_before_onset
-        self.dl_models = [cls_name for cls_name, cls_obj in inspect.getmembers(sys.modules['classes.DL']) if inspect.isclass(cls_obj)]
+        self.dl_models = [cls_name for cls_name, cls_obj in inspect.getmembers(sys.modules['src.classes.DL']) if inspect.isclass(cls_obj)]
         self.data_generated = {}
 
     def get_params_model(self, model):
