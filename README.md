@@ -20,23 +20,9 @@ This repository contains the code used in the paper with the same title.
 
 ## Abstract
 
-[An Experimental Review on the Early Prediction of Sepsis in the
-ICU](doi)
+[Comparing artificial intelligence strategies for early sepsis detection in the ICU: an experimental study](https://doi.org/10.1007/s10489-023-05124-z)
 
-> Sepsis is a life-threatening organ dysfunction due to a dysregulated host response to infection and constitutes a major global health concern. Hence,
-we need a systems medicine approach to face one of the challenges in sepsis
-disease: early recognition in intensive care units (ICU). In this scenario, machine learning algorithms can be used to extract patterns from the amount
-of data. The goal is to mine and exploit health data using machine learning because an amount of clinical data (vital signs, medications, laboratory
-measurements, etc.) and health history are available in databases for patients suffering from sepsis. Recently, several works face this challenge, but
-a few of them provided the code and it is very difficult to compare the results. Therefore, this work performed an experimental review of publications
-discussing early prediction of sepsis in the ICU using machine learning algorithms. Briefly, we reviewed the literature, we analyzed several imputation
-strategies because clinical data is commonly sampled irregularly, requiring
-a set of hand-crafted preprocessing steps, and we conducted an extensive
-experimental study using five classical machine learning methods and five
-popular deep learning models using an offline training with horizon evaluation. Finally, deep learning methods (TCN and LSTM) outperform the
-other methods by a significant margin, especially for early detection tasks
-more than 4 hours before the onset of sepsis, while Random Forest shows the
-worst behavior.
+> Sepsis is a life-threatening condition whose early recognition is key to improving outcomes for patients in intensive care units (ICUs). Artificial intelligence can play a crucial role in mining and exploiting health data for sepsis prediction. However, progress in this field has been impeded by a lack of comparability across studies. Some studies do not provide code, and each study independently processes a dataset with large numbers of missing values. Here, we present a comparative analysis of early sepsis prediction in the ICU by using machine learning (ML) algorithms and provide open-source code to the community to support future work. We reviewed the literature and conducted two phases of experiments. In the first phase, we analyzed five imputation strategies for handling missing data in a clinical dataset (which is often sampled irregularly and requires hand-crafted preprocessing steps). We used the MIMIC-III dataset, which includes more than 5,800 ICU hospital admissions from 2001 to 2012. In the second phase, we conducted an extensive experimental study using five ML methods and five popular deep learning models. We evaluated the performance of the methods by using the area under the precision-recall curve, a standard metric for clinical contexts. The deep learning methods (TCN and LSTM) outperformed the other methods, particularly in early detection tasks more than 4 hours before sepsis onset. The motivation for this work was to provide a benchmark framework for future research, thus enabling advancements in this field.
 
 
 <a name="Authors"/>
