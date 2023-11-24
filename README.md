@@ -1,4 +1,7 @@
-# An Experimental Review on the Early Prediction of Sepsis in the ICU
+#   [Comparing artificial intelligence strategies for early sepsis detection in the ICU: an experimental study](https://doi.org/10.1007/s10489-023-05124-z)
+
+This repository contains the code used in the paper with the same title.
+
 
 # Table of Contents
 1. [Abstract](#Abstract) 
