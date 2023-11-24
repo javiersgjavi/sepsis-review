@@ -1,3 +1,5 @@
+[![DOI:10.1007/s10489-023-05124-z](http://img.shields.io/badge/DOI-10.1007/s10489--023--05124--z-32a852.svg)](https://doi.org/10.1007/s10489-023-05124-z) [![DOI](https://zenodo.org/badge/567043441.svg)](https://zenodo.org/doi/10.5281/zenodo.10203161)
+
 #   [Comparing artificial intelligence strategies for early sepsis detection in the ICU: an experimental study](https://doi.org/10.1007/s10489-023-05124-z)
 
 This repository contains the code used in the paper with the same title.
