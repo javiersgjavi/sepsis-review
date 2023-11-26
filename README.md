@@ -2,7 +2,18 @@
 
 #   [Comparing artificial intelligence strategies for early sepsis detection in the ICU: an experimental study](https://doi.org/10.1007/s10489-023-05124-z)
 
-This repository contains the code used in the paper with the same title.
+This repository contains the code used in the paper with the same title. To cite the article, please, use the following guide:
+
+```
+@article{solis2023comparing,
+  title={Comparing artificial intelligence strategies for early sepsis detection in the ICU: an experimental study},
+  author={Sol{\'\i}s-Garc{\'\i}a, Javier and Vega-M{\'a}rquez, Bel{\'e}n and Nepomuceno, Juan A and Riquelme-Santos, Jos{\'e} C and Nepomuceno-Chamorro, Isabel A},
+  journal={Applied Intelligence},
+  pages={1--15},
+  year={2023},
+  publisher={Springer}
+}
+```
 
 
 # Table of Contents
