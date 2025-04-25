@@ -80,9 +80,11 @@ _This is the dataset which is mainly used in the article_
 
 ### Generate the data
 
-```INFO:```: ***If you are only interested in obtaining the data, I recommend you to visit this other [repository](https://github.com/javiersgjavi/tabular-mimic-iii)***
+> [!IMPORTANT]
+> If you are only interested in obtaining the data, I recommend you to visit this other [repository](https://github.com/javiersgjavi/mimic-III-tabular)
 
-```WARNING:``` This guide has been made for Ubuntu 20.04, it should be similar for other Linux versions, but may differ for a different operating system
+> [!WARNING]
+> This guide has been made for Ubuntu 20.04, it should be similar for other Linux versions, but may differ for a different operating system
 
 ***If you are only interested in obtaining the data, I recommend you to visit this other repository***
 
